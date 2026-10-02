@@ -1,0 +1,750 @@
+/* ==========================================================================
+   Sistema de gestión de un taller de reparación tecnológica
+   ---------------------------------------------------------------------------
+   Hoja de estilos única, organizada por bloques: base, componentes, layout y
+   un bloque por módulo.
+
+   El sistema visual es de tipo SaaS: superficie gris muy clara, contenedores
+   blancos con borde de 1px y sombra corta, esquinas de 12px y una barra lateral
+   azul marino. Los colores de estado (verde, ámbar, rojo) se usan solo para
+   señalar, nunca como decoración.
+   ========================================================================== */
+
+:root {
+  /* Marca */
+  --azul: #2563eb;
+  --azul-oscuro: #1d4ed8;
+  --azul-claro: #dbeafe;
+  --fuente: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Semánticos */
+  --verde: #059669;
+  --verde-claro: #dcfce7;
+  --verde-texto: #15803d;
+  --ambar: #d97706;
+  --ambar-claro: #fef9c3;
+  --ambar-texto: #a16207;
+  --naranja: #ea580c;
+  --naranja-claro: #ffedd5;
+  --rojo: #dc2626;
+  --rojo-claro: #fee2e2;
+  --rojo-texto: #b91c1c;
+  --violeta: #7c3aed;
+  --violeta-claro: #ede9fe;
+
+  /* Escala neutra */
+  --gris-900: #0f172a;
+  --gris-800: #1e293b;
+  --gris-700: #334155;
+  --gris-600: #475569;
+  --gris-500: #64748b;
+  --gris-400: #94a3b8;
+  --gris-300: #cbd5e1;
+  --gris-200: #e2e8f0;
+  --gris-100: #f1f5f9;
+  --gris-50: #f8fafc;
+  --blanco: #ffffff;
+
+  /* Métrica de forma */
+  --radio: 12px;
+  --radio-chico: 8px;
+  --sombra: 0 2px 8px rgba(15, 23, 42, .04);
+  --sombra-alta: 0 6px 18px rgba(15, 23, 42, .1);
+  --borde: 1px solid var(--gris-200);
+  --borde-control: 1px solid var(--gris-300);
+  --foco: 0 0 0 3px rgba(37, 99, 235, .15);
+  --relleno-tarjeta: 1.25rem;
+  --gap: 1.25rem;
+
+  --fuente: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--fuente);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--gris-900);
+  background: var(--gris-50);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { margin: 0 0 .4rem; line-height: 1.25; letter-spacing: -.01em; }
+p { margin: 0 0 .6rem; }
+code { background: var(--gris-100); padding: .1rem .3rem; border-radius: 4px; font-size: .85em; }
+[hidden] { display: none !important; }
+
+/* --------------------------------------------------------------------------
+   Vista de acceso
+   -------------------------------------------------------------------------- */
+
+.login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--gris-900), #1e3a8a 55%, #1d4ed8);
+  padding: 1rem;
+}
+
+.login__tarjeta {
+  width: 100%;
+  max-width: 380px;
+  background: var(--blanco);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 24px 60px rgba(2, 6, 23, .35);
+}
+
+.login__titulo { font-size: 1.5rem; text-align: center; }
+.login__subtitulo { text-align: center; color: var(--gris-500); margin-bottom: 1.5rem; }
+.login__ayuda { font-size: .78rem; color: var(--gris-500); text-align: center; margin: 1rem 0 0; }
+
+/* --------------------------------------------------------------------------
+   Formularios
+   -------------------------------------------------------------------------- */
+
+.campo { display: block; margin-bottom: .9rem; }
+.campo__etiqueta { display: block; font-size: .8125rem; font-weight: 600; margin-bottom: .3rem; color: var(--gris-700); }
+
+.campo__control {
+  width: 100%;
+  padding: .55rem .75rem;
+  border: var(--borde-control);
+  border-radius: var(--radio-chico);
+  font: inherit;
+  font-size: .9rem;
+  color: var(--gris-900);
+  background: var(--blanco);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.campo__control::placeholder { color: var(--gris-400); }
+.campo__control:hover { border-color: var(--gris-400); }
+.campo__control:focus {
+  outline: none;
+  border-color: var(--azul);
+  box-shadow: var(--foco);
+}
+.campo--ancho { grid-column: 1 / -1; }
+
+/* Casilla de verificacion. El input va oculto y el <span> hace de caja para
+   que el area pulsable cubra tambien la palabra, no solo el cuadrado. */
+.campo--check { justify-content: flex-end; }
+.campo__check {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  font-size: .8125rem;
+  color: var(--gris-600);
+  cursor: pointer;
+  user-select: none;
+  padding: .55rem .1rem;
+  white-space: nowrap;
+}
+.campo__check input {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  margin: 0;
+  border: var(--borde);
+  border-radius: 4px;
+  background: var(--blanco);
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease;
+}
+.campo__check input:hover { border-color: var(--gris-400); }
+.campo__check input:checked {
+  background: var(--azul) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-6'/%3E%3C/svg%3E") center / 13px no-repeat;
+  border-color: var(--azul);
+}
+.campo__check input:focus-visible { outline: 2px solid var(--azul); outline-offset: 2px; }
+
+/* Wrapper transparente del campo con datalist: solo existe para agrupar el input
+   con su <datalist>, asi que no debe pintar borde ni padding propios o se veria
+   un recuadro duplicado. */
+.campo__control--datalist {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+.campo__control--datalist:focus { border: none; box-shadow: none; }
+.campo__control--datalist > .campo__control { display: block; }
+
+.campos { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0 1rem; }
+
+.alerta { padding: .6rem .85rem; border-radius: var(--radio-chico); font-size: .875rem; margin: .5rem 0; }
+.alerta--error { background: var(--rojo-claro); color: #b91c1c; }
+.alerta--aviso { background: var(--ambar-claro); color: #b45309; }
+.alerta--exito { background: var(--verde-claro); color: #047857; }
+
+/* --------------------------------------------------------------------------
+   Botones
+   -------------------------------------------------------------------------- */
+
+.boton {
+  font: inherit;
+  font-size: .875rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: var(--radio-chico);
+  padding: .5rem .9rem;
+  cursor: pointer;
+  background: var(--gris-100);
+  color: var(--gris-700);
+  transition: background .15s ease, color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .1s ease;
+}
+.boton:hover { background: var(--gris-200); color: var(--gris-900); }
+.boton:active { transform: translateY(1px); }
+.boton:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+.boton:focus-visible { outline: 2px solid var(--azul); outline-offset: 2px; }
+
+.boton--primario { background: var(--azul); color: var(--blanco); }
+.boton--primario:hover { background: var(--azul-oscuro); color: var(--blanco); box-shadow: 0 1px 3px rgba(37, 99, 235, .3); }
+.boton--exito { background: var(--verde); color: var(--blanco); }
+.boton--exito:hover { background: #047857; color: var(--blanco); }
+.boton--peligro { background: var(--rojo); color: var(--blanco); }
+.boton--peligro:hover { background: #b91c1c; color: var(--blanco); }
+.boton--fantasma { background: var(--blanco); border-color: var(--gris-200); color: var(--gris-700); }
+.boton--fantasma:hover { background: var(--gris-50); border-color: var(--gris-300); color: var(--gris-900); }
+.boton--bloque { width: 100%; }
+.boton--chico { padding: .3rem .6rem; font-size: .8125rem; }
+.boton--fila { display: flex; gap: .4rem; flex-wrap: wrap; }
+
+/* --------------------------------------------------------------------------
+   Layout de la aplicación
+   -------------------------------------------------------------------------- */
+
+.app { display: grid; grid-template-columns: 248px 1fr; min-height: 100vh; }
+
+/* --- Barra lateral -------------------------------------------------------
+   Fondo #0F172A, enlaces en #94A3B8, hover en #F8FAFC y el módulo activo
+   resaltado en #2563EB con radio de 8px.
+   -------------------------------------------------------------------------- */
+.menu {
+  background: var(--gris-900);
+  color: var(--gris-400);
+  display: flex;
+  flex-direction: column;
+  padding: 1.15rem .85rem;
+  gap: 1.15rem;
+}
+
+.menu__marca { display: flex; align-items: center; gap: .65rem; padding: 0 .5rem; }
+.menu__logo {
+  width: 34px; height: 34px; border-radius: var(--radio-chico);
+  background: var(--azul); color: var(--blanco);
+  display: grid; place-items: center; font-weight: 700; font-size: .8rem;
+}
+.menu__nombre { font-weight: 600; letter-spacing: -.01em; color: var(--blanco); }
+.menu__navegacion { display: flex; flex-direction: column; gap: .2rem; flex: 1; }
+
+.menu__enlace {
+  display: flex; align-items: center; gap: .65rem;
+  padding: .65rem .75rem;
+  border-radius: var(--radio-chico);
+  color: var(--gris-400);
+  text-decoration: none;
+  font-size: .875rem;
+  font-weight: 500;
+  transition: background .15s ease, color .15s ease;
+}
+.menu__enlace:hover { background: rgba(255, 255, 255, .06); color: var(--gris-50); }
+
+/* La pestaña activa se rellena con el azul de marca: es la unica superficie de
+   color pleno de la barra, y por eso el acento va aqui y no en la barra lateral
+   entera. */
+.menu__enlace.activo {
+  background: var(--azul);
+  color: var(--blanco);
+  font-weight: 600;
+}
+.menu__enlace.activo:hover { background: var(--azul-oscuro); }
+.menu__icono { width: 1.15rem; text-align: center; font-size: 1rem; opacity: .9; }
+
+.menu__pie { border-top: 1px solid rgba(255, 255, 255, .1); padding-top: .9rem; display: grid; gap: .5rem; }
+.menu__usuario { display: grid; font-size: .8125rem; padding: 0 .5rem; color: var(--blanco); }
+.menu__usuario span { color: var(--gris-400); font-size: .75rem; }
+
+.panel { display: flex; flex-direction: column; min-width: 0; }
+
+.cabecera {
+  background: var(--blanco);
+  border-bottom: var(--borde);
+  padding: .9rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.cabecera__titulo { font-size: 1.25rem; margin: 0; font-weight: 600; }
+.cabecera__subtitulo { margin: 0; font-size: .8125rem; color: var(--gris-500); }
+.cabecera__estado { margin-left: auto; display: flex; align-items: center; gap: .4rem; font-size: .8125rem; color: var(--gris-500); }
+.cabecera__menu { display: none; font-size: 1.2rem; background: none; border: 0; cursor: pointer; color: var(--gris-700); }
+
+.punto { width: 8px; height: 8px; border-radius: 50%; background: var(--gris-300); }
+.punto--activo { background: #22c55e; box-shadow: 0 0 0 3px rgba(34, 197, 94, .18); }
+
+.contenido { padding: var(--gap) 1.5rem 2.5rem; overflow: auto; flex: 1; }
+
+/* Superficie base de todo bloque con contenido. */
+.seccion {
+  background: var(--blanco);
+  border: var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: var(--gap);
+}
+.seccion__titulo { font-size: 1.0625rem; font-weight: 600; margin: 0 0 1rem; display: flex; align-items: center; gap: .5rem; }
+.seccion__acciones { margin-left: auto; display: flex; gap: .4rem; }
+
+.encabezado-modulo { display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; margin-bottom: 1.15rem; }
+.encabezado-modulo__filtros { display: flex; gap: .75rem; flex-wrap: wrap; align-items: flex-end; flex: 1; }
+.encabezado-modulo__filtros .campo { margin-bottom: 0; }
+
+/* --------------------------------------------------------------------------
+   Indicadores
+   -------------------------------------------------------------------------- */
+
+.tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: var(--gap); margin-bottom: var(--gap); }
+
+.tarjeta {
+  background: var(--blanco);
+  border: var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: var(--relleno-tarjeta);
+  border-left: 3px solid var(--azul);
+}
+.tarjeta--verde { border-left-color: var(--verde); }
+.tarjeta--ambar { border-left-color: var(--ambar); }
+.tarjeta--rojo { border-left-color: var(--rojo); }
+.tarjeta__etiqueta { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--gris-500); font-weight: 600; }
+.tarjeta__valor { font-size: 1.5rem; font-weight: 600; margin: .3rem 0 .2rem; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.tarjeta__nota { font-size: .8125rem; color: var(--gris-500); }
+
+/* --------------------------------------------------------------------------
+   Tablas
+   -------------------------------------------------------------------------- */
+
+.tabla-contenedor { overflow-x: auto; }
+
+.tabla { width: 100%; border-collapse: collapse; font-size: .875rem; }
+.tabla th, .tabla td { padding: .85rem .9rem; text-align: left; border-bottom: var(--borde); vertical-align: middle; }
+.tabla th {
+  font-size: .6875rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--gris-500);
+  font-weight: 600;
+  background: var(--gris-100);
+  white-space: nowrap;
+}
+
+/* Hover de fila: da feedback de que la fila es interactiva sin necesidad de un
+   borde de color que compita con los badges de estado. */
+.tabla tbody tr { transition: background .12s ease; }
+.tabla tbody tr:hover { background: var(--gris-50); }
+.tabla tbody tr:last-child td { border-bottom: none; }
+.tabla thead th { border-bottom-color: var(--gris-200); }
+.tabla tbody tr:last-child td { border-bottom: 0; }
+.tabla tbody tr { transition: background .12s ease; }
+.tabla tbody tr:hover { background: var(--gris-50); }
+.tabla .numero { text-align: right; font-variant-numeric: tabular-nums; }
+.tabla__vacia { text-align: center; color: var(--gris-500); padding: 2rem 1rem; }
+
+/* --------------------------------------------------------------------------
+   Etiquetas de estado
+   Radio de 16px, texto de 12px en negrita suave y relleno pastel. El texto es
+   oscuro sobre pastel a proposito: en blanco sobre #fef9c3 el contraste cae a
+   ~1.3:1 y el texto resulta ilegible.
+   -------------------------------------------------------------------------- */
+
+.etiqueta {
+  display: inline-block;
+  font-size: .75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: .01em;
+  padding: .2rem .65rem;
+  border-radius: 16px;
+  background: var(--gris-100);
+  color: var(--gris-600);
+  white-space: nowrap;
+}
+
+/* Completado / entregado */
+.etiqueta--entregado,
+.etiqueta--activo,
+.etiqueta--saldado { background: var(--verde-claro); color: var(--verde-texto); }
+
+/* En proceso / diagnostico */
+.etiqueta--diagnostico { background: var(--ambar-claro); color: var(--ambar-texto); }
+
+/* Pendiente / alerta */
+.etiqueta--cancelado,
+.etiqueta--deuda { background: var(--rojo-claro); color: var(--rojo-texto); }
+
+/* Estados intermedios de la maquina: cada uno con su tono pastel. */
+.etiqueta--recibido { background: var(--azul-claro); color: #1e40af; }
+.etiqueta--presupuestado { background: var(--violeta-claro); color: #6d28d9; }
+.etiqueta--reparacion { background: var(--naranja-claro); color: var(--naranja); }
+.etiqueta--listo { background: #cffafe; color: #0e7490; }
+.etiqueta--inactivo { background: var(--gris-50); color: var(--gris-500); }
+
+/* --------------------------------------------------------------------------
+   Flujo de estados de la orden
+   -------------------------------------------------------------------------- */
+
+.flujo { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: .25rem 0 1.15rem; }
+.flujo__paso {
+  font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
+  padding: .3rem .7rem; border-radius: 999px;
+  background: var(--gris-100); color: var(--gris-500);
+}
+.flujo__paso.actual { background: var(--azul); color: var(--blanco); }
+.flujo__paso.hecho { background: var(--verde-claro); color: #047857; }
+.flujo__flecha { color: var(--gris-300); }
+
+/* --------------------------------------------------------------------------
+   Cuadros de detalle y barras
+   -------------------------------------------------------------------------- */
+
+.rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .9rem 1.5rem; }
+.dato { display: grid; gap: .1rem; }
+.dato__clave { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--gris-500); font-weight: 600; }
+.dato__valor { font-weight: 500; font-size: .9rem; }
+
+.barra-carga { height: 6px; border-radius: 999px; background: var(--gris-100); overflow: hidden; min-width: 90px; }
+.barra-carga__relleno { height: 100%; border-radius: 999px; background: var(--verde); }
+.barra-carga__relleno.alto { background: var(--ambar); }
+.barra-carga__relleno.critico { background: var(--rojo); }
+
+/* --------------------------------------------------------------------------
+   Avisos y modal
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   Avisos (toasts)
+   Anclados abajo a la derecha, fuera del centro de la vista para no tapar el
+   contenido. El aviso de error ya no es un bloque rojo solido: es una tarjeta
+   blanca con una banda de color y un icono, que se lee como aviso y no como
+   un corte de pantalla.
+   -------------------------------------------------------------------------- */
+
+.avisos {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  display: grid;
+  gap: .6rem;
+  z-index: 60;
+  max-width: min(380px, calc(100vw - 2.5rem));
+  pointer-events: none;
+}
+
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: .65rem;
+  background: var(--blanco);
+  color: var(--gris-800);
+  border: var(--borde);
+  border-left: 3px solid var(--gris-400);
+  border-radius: var(--radio-chico);
+  padding: .8rem .95rem;
+  font-size: .875rem;
+  line-height: 1.45;
+  box-shadow: var(--sombra-alta);
+  animation: entrar .2s ease;
+  pointer-events: auto;
+}
+.aviso__icono { flex: none; font-size: .95rem; line-height: 1.4; }
+.aviso__texto { min-width: 0; overflow-wrap: anywhere; }
+
+.aviso--error { border-left-color: var(--rojo); }
+.aviso--error .aviso__icono { color: var(--rojo); }
+.aviso--exito { border-left-color: var(--verde); }
+.aviso--exito .aviso__icono { color: var(--verde); }
+.aviso--aviso { border-left-color: var(--ambar); }
+.aviso--aviso .aviso__icono { color: var(--ambar); }
+
+@keyframes entrar { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .aviso { animation: none; } }
+
+.modal { position: fixed; inset: 0; background: rgba(15, 23, 42, .5); display: grid; place-items: center; padding: 1.25rem; z-index: 70; }
+.modal__caja {
+  background: var(--blanco);
+  border: var(--borde);
+  border-radius: var(--radio);
+  width: 100%;
+  max-width: 720px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 60px rgba(2, 6, 23, .25);
+}
+.modal__cabecera { display: flex; align-items: center; padding: 1.1rem 1.5rem; border-bottom: var(--borde); }
+.modal__cabecera h3 { margin: 0; font-size: 1.0625rem; font-weight: 600; flex: 1; }
+.modal__cerrar { border: 0; background: none; font-size: 1.5rem; cursor: pointer; color: var(--gris-400); line-height: 1; }
+.modal__cerrar:hover { color: var(--gris-900); }
+.modal__cuerpo { padding: 1.5rem; overflow: auto; }
+
+.pila { display: grid; gap: var(--gap); }
+.acciones-modal { display: flex; justify-content: flex-end; gap: .5rem; margin-top: 1.5rem; }
+
+/* --------------------------------------------------------------------------
+   Estados vacíos y utilidades
+   -------------------------------------------------------------------------- */
+
+.vacio { text-align: center; color: var(--gris-500); padding: 2.5rem 1rem; }
+.vacio__icono { font-size: 2rem; display: block; margin-bottom: .5rem; opacity: .45; }
+
+.cargando { text-align: center; color: var(--gris-500); padding: 2.5rem 1rem; }
+
+.oculto { display: none; }
+.texto-pequeno { font-size: .8125rem; color: var(--gris-500); }
+.texto-derecha { text-align: right; }
+.negrita { font-weight: 600; }
+.mb-0 { margin-bottom: 0; }
+
+/* ==========================================================================
+   Módulo 1 - Tablero de control
+   ========================================================================== */
+
+.tablero { display: grid; gap: var(--gap); }
+
+/* --- Encabezado con saludo y selector de periodo ------------------------- */
+
+.tablero__saludo { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.tablero__saludo h2 { margin: 0; font-size: 1.375rem; font-weight: 600; letter-spacing: -.02em; }
+.tablero__saludo p { margin: .1rem 0 0; font-size: .875rem; color: var(--gris-500); }
+.tablero__periodo { margin-left: auto; display: flex; gap: .2rem; background: var(--gris-100); padding: .22rem; border-radius: var(--radio-chico); }
+.tablero__periodo button {
+  border: 0; background: none; padding: .35rem .75rem; font-size: .8125rem; font-weight: 600;
+  border-radius: 6px; cursor: pointer; color: var(--gris-500);
+  transition: background .15s ease, color .15s ease;
+}
+.tablero__periodo button:hover { color: var(--gris-900); }
+.tablero__periodo button.activo { background: var(--blanco); color: var(--azul); box-shadow: var(--sombra); }
+
+/* --- Tarjetas de indicadores ---------------------------------------------- */
+
+.metricas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--gap); }
+
+.metrica {
+  position: relative;
+  background: var(--blanco);
+  border: var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 1.25rem;
+  display: grid;
+  gap: .1rem;
+  align-content: start;
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.metrica:hover { box-shadow: var(--sombra-alta); transform: translateY(-1px); }
+
+.metrica__cabeza { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; }
+.metrica__titulo { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--gris-500); font-weight: 600; }
+
+/* Icono sobre fondo pastel: da color al indicador sin ruido. */
+.metrica__icono {
+  margin-left: auto;
+  width: 2.25rem; height: 2.25rem; border-radius: 10px;
+  display: grid; place-items: center;
+  font-size: 1.05rem;
+  background: var(--azul-claro); color: #1e40af;
+}
+.metrica--verde .metrica__icono { background: var(--verde-claro); color: #047857; }
+.metrica--ambar .metrica__icono { background: var(--ambar-claro); color: #b45309; }
+.metrica--rojo .metrica__icono { background: var(--rojo-claro); color: #b91c1c; }
+
+.metrica__valor { font-size: 1.875rem; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: tabular-nums; line-height: 1.15; }
+.metrica__pie { display: flex; align-items: center; gap: .4rem; font-size: .8125rem; color: var(--gris-500); flex-wrap: wrap; }
+
+.tendencia { display: inline-flex; align-items: center; gap: .15rem; font-weight: 600; }
+.tendencia--sube { color: var(--verde); }
+.tendencia--baja { color: var(--rojo); }
+.tendencia--igual { color: var(--gris-400); }
+
+.metrica__progreso { height: 4px; border-radius: 999px; background: var(--gris-100); margin-top: .75rem; overflow: hidden; }
+.metrica__progreso span { display: block; height: 100%; border-radius: 999px; background: currentColor; color: var(--azul); }
+.metrica--verde .metrica__progreso span { color: var(--verde); }
+.metrica--ambar .metrica__progreso span { color: var(--ambar); }
+.metrica--rojo .metrica__progreso span { color: var(--rojo); }
+
+/* --- Rejillas del tablero -------------------------------------------------- */
+
+.tablero__cuerpo { display: grid; grid-template-columns: 1.75fr 1fr; gap: var(--gap); align-items: start; }
+.tablero__fila { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: var(--gap); align-items: start; }
+
+.panel-tablero {
+  background: var(--blanco);
+  border: var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 1.25rem 1.5rem;
+}
+.panel-tablero__cabeza { display: flex; align-items: flex-start; gap: .75rem; margin-bottom: 1.15rem; flex-wrap: wrap; }
+.panel-tablero__titulo { font-size: 1.0625rem; font-weight: 600; margin: 0; }
+.panel-tablero__nota { font-size: .8125rem; color: var(--gris-500); margin: .1rem 0 0; }
+
+.leyenda { margin-left: auto; display: flex; gap: .9rem; font-size: .8125rem; color: var(--gris-500); }
+.leyenda span { display: inline-flex; align-items: center; gap: .35rem; }
+.leyenda i { width: 9px; height: 9px; border-radius: 3px; display: inline-block; }
+
+/* --- Gráfico de líneas ------------------------------------------------------ */
+
+.grafico { width: 100%; height: auto; display: block; overflow: visible; }
+.grafico__rejilla { stroke: var(--gris-200); stroke-width: 1; }
+.grafico__eje { fill: var(--gris-400); font-size: 10px; }
+.grafico__linea { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.grafico__area { opacity: .1; }
+.grafico__punto { stroke: var(--blanco); stroke-width: 2; cursor: pointer; }
+.grafico__punto:hover { r: 6; }
+
+/* --- Anillo de reparto ------------------------------------------------------ */
+
+.anillos { display: grid; place-items: center; }
+.anillo { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; justify-content: center; }
+
+/* El marco fija el tamano y el centro se apila encima del anillo, para que
+   quede centrado sin depender de margenes negativos que se rompen al cambiar
+   la fuente o el tamano del numero. */
+.anillo__marco { position: relative; width: 168px; height: 168px; display: grid; place-items: center; flex: none; }
+.anillo__lienzo { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.anillo__centro { position: relative; text-align: center; line-height: 1.2; font-size: 1.5rem; font-weight: 600; letter-spacing: -.02em; }
+.anillo__centro span { display: block; font-size: .6875rem; font-weight: 600; color: var(--gris-500); text-transform: uppercase; letter-spacing: .05em; }
+.anillo__leyenda { display: grid; gap: .4rem; min-width: 160px; }
+.anillo__fila { display: flex; align-items: center; gap: .5rem; font-size: .8125rem; color: var(--gris-600); }
+.anillo__fila i { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+.anillo__fila b { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 600; color: var(--gris-900); }
+
+/* --- Acciones rápidas ------------------------------------------------------- */
+
+.accesos { display: grid; gap: .55rem; }
+.acceso {
+  display: flex; align-items: center; gap: .8rem; text-align: left; width: 100%; cursor: pointer;
+  background: var(--blanco);
+  border: var(--borde);
+  border-radius: 10px;
+  padding: .8rem .9rem;
+  font: inherit;
+  transition: box-shadow .15s ease, border-color .15s ease, transform .12s ease;
+}
+.acceso:hover { transform: translateY(-1px); box-shadow: var(--sombra-alta); border-color: var(--gris-300); }
+.acceso__icono { width: 2.25rem; height: 2.25rem; border-radius: 9px; display: grid; place-items: center; background: var(--azul-claro); color: #1e40af; flex: none; }
+.acceso__icono--verde { background: var(--verde-claro); color: #047857; }
+.acceso__icono--ambar { background: var(--ambar-claro); color: #b45309; }
+.acceso__icono--rojo { background: var(--rojo-claro); color: #b91c1c; }
+.acceso__texto strong { display: block; font-size: .875rem; font-weight: 600; }
+.acceso__texto span { font-size: .8125rem; color: var(--gris-500); }
+.acceso__flecha { margin-left: auto; color: var(--gris-300); font-size: 1.1rem; }
+
+/* --- Alertas ---------------------------------------------------------------- */
+
+.alertas { display: grid; gap: .55rem; }
+.alerta-ficha {
+  display: flex; gap: .8rem; padding: .8rem .9rem;
+  border-radius: 10px;
+  border: var(--borde);
+  background: var(--gris-50);
+}
+.alerta-ficha__marca { width: 3px; border-radius: 999px; flex: none; background: var(--gris-300); }
+.alerta-ficha--ambar { background: #fffbeb; border-color: #fde68a; }
+.alerta-ficha--ambar .alerta-ficha__marca { background: var(--ambar); }
+.alerta-ficha--rojo { background: #fef2f2; border-color: #fecaca; }
+.alerta-ficha--rojo .alerta-ficha__marca { background: var(--rojo); }
+.alerta-ficha--azul { background: #eff6ff; border-color: #bfdbfe; }
+.alerta-ficha--azul .alerta-ficha__marca { background: var(--azul); }
+.alerta-ficha__cuerpo { min-width: 0; flex: 1; }
+.alerta-ficha__cuerpo strong { display: block; font-size: .875rem; font-weight: 600; }
+.alerta-ficha__cuerpo p { margin: .1rem 0 0; font-size: .8125rem; color: var(--gris-600); }
+.alerta-ficha__conteo { font-size: 1.25rem; font-weight: 600; align-self: center; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.contador { display: inline-grid; place-items: center; min-width: 1.4rem; height: 1.4rem; padding: 0 .4rem; border-radius: 999px; background: var(--rojo); color: var(--blanco); font-size: .75rem; font-weight: 600; }
+
+/* --- Listas de barras -------------------------------------------------------- */
+
+.barras { display: grid; gap: .7rem; }
+.barra-fila { display: grid; grid-template-columns: 1fr auto; gap: .2rem .75rem; font-size: .8125rem; }
+.barra-fila__nombre { font-weight: 500; }
+.barra-fila__valor { color: var(--gris-500); font-variant-numeric: tabular-nums; }
+.barra-fila__pista { grid-column: 1 / -1; }
+
+/* ==========================================================================
+   Controles compartidos por varios módulos
+   ========================================================================== */
+
+/* --- Filtros rápidos --------------------------------------------------------- */
+
+.chips { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: 1.15rem; }
+.chip {
+  display: inline-flex; align-items: center; gap: .4rem; cursor: pointer;
+  background: var(--blanco);
+  border: var(--borde);
+  border-radius: 999px;
+  padding: .35rem .8rem;
+  font: inherit;
+  font-size: .8125rem;
+  font-weight: 500;
+  color: var(--gris-600);
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+.chip:hover { border-color: var(--gris-300); color: var(--gris-900); }
+.chip--activo { background: var(--azul); border-color: var(--azul); color: var(--blanco); font-weight: 600; }
+.chip__conteo { background: var(--gris-100); color: var(--gris-600); border-radius: 999px; padding: 0 .4rem; font-size: .75rem; }
+.chip--activo .chip__conteo { background: rgba(255, 255, 255, .2); color: var(--blanco); }
+
+/* --- Pestañas ---------------------------------------------------------------- */
+
+.pestanas { display: flex; gap: .1rem; border-bottom: var(--borde); margin-bottom: var(--gap); flex-wrap: wrap; }
+.pestana {
+  border: 0; background: none; cursor: pointer;
+  padding: .6rem .95rem;
+  font: inherit;
+  font-size: .875rem;
+  font-weight: 500;
+  color: var(--gris-500);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color .15s ease, border-color .15s ease;
+}
+.pestana:hover { color: var(--gris-900); }
+.pestana--activa { color: var(--azul); border-bottom-color: var(--azul); font-weight: 600; }
+
+/* --- Barra de nivel de stock -------------------------------------------------- */
+
+.stock { display: grid; gap: .3rem; min-width: 130px; }
+.stock .barra-carga { position: relative; }
+.stock__minimo { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--gris-700); opacity: .5; }
+
+/* --------------------------------------------------------------------------
+   Adaptación a pantallas pequeñas
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+  .tablero__cuerpo { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; }
+  .menu {
+    position: fixed; inset: 0 auto 0 0; width: 248px; z-index: 50;
+    transform: translateX(-100%);
+    transition: transform .2s ease;
+  }
+  .menu.abierto { transform: none; }
+  .cabecera__menu { display: block; }
+  .contenido { padding: 1rem 1rem 2rem; }
+  .tablero__periodo { margin-left: 0; width: 100%; justify-content: space-between; }
+  .metricas { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+  .metrica__valor { font-size: 1.5rem; }
+  .seccion, .panel-tablero { padding: 1.15rem; }
+  .modal__cuerpo { padding: 1.15rem; }
+}

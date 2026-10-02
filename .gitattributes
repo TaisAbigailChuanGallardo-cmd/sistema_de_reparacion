@@ -1,0 +1,24 @@
+# Normaliza los finales de linea en el repositorio.
+#
+# Sin esto, en Windows los archivos se guardan con CRLF y en Linux con LF, y el
+# mismo archivo aparece como modificado aunque nadie lo haya tocado. Git guarda
+# LF en el indice y solo convierte a CRLF al descargar en Windows.
+* text=auto
+
+# El seed y el esquema se ejecutan con mysql, que tolera ambos finales pero
+# conviene que sean identicos en todas las maquinas.
+*.sql text eol=lf
+
+# Archivos de texto que deben quedar exactamente como estan.
+*.js  text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.md  text eol=lf
+
+# Archivos que Git no debe tocar nunca.
+*.docx binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
